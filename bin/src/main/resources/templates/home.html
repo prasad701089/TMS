@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Toll Gate - Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<nav class="navbar navbar-dark bg-dark px-3">
+    <span class="navbar-brand">Toll Gate System</span>
+    <button class="btn btn-danger" onclick="logout()">Logout</button>
+</nav>
+
+<div class="container mt-4">
+    <h3>Welcome, <span id="user"></span> 👋</h3>
+
+    <div class="card p-3 mt-3">
+        <h5>Register Vehicle</h5>
+        <form id="vehicleForm" class="row g-2">
+            <div class="col-md-6">
+                <input type="text" id="plateNumber" class="form-control" placeholder="Plate Number" required>
+            </div>
+            <div class="col-md-6">
+                <select id="type" class="form-select">
+                    <option>Car</option>
+                    <option>Truck</option>
+                    <option>Bus</option>
+                </select>
+            </div>
+            <div class="col-12">
+                <button class="btn btn-primary">Add Vehicle</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="card p-3 mt-3">
+        <h5>All Transactions</h5>
+        <button class="btn btn-success mb-2" onclick="loadTransactions()">Refresh</button>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Vehicle</th>
+                <th>Amount</th>
+                <th>Time</th>
+            </tr>
+            </thead>
+            <tbody id="txTable"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    document.getElementById("user").textContent = localStorage.getItem("username");
+
+    document.getElementById("vehicleForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const plateNumber = document.getElementById("plateNumber").value;
+      const type = document.getElementById("type").value;
+
+      await fetch("http://localhost:8080/api/toll/vehicle", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plateNumber, type })
+      });
+      alert("Vehicle Registered!");
+    });
+
+    async function loadTransactions() {
+      const res = await fetch("http://localhost:8080/api/toll/transactions");
+      const data = await res.json();
+
+      const tbody = document.getElementById("txTable");
+      tbody.innerHTML = "";
+      data.forEach(tx => {
+        tbody.innerHTML += `
+          <tr>
+            <td>${tx.id}</td>
+            <td>${tx.vehicle.plateNumber}</td>
+            <td>${tx.tollAmount}</td>
+            <td>${tx.timestamp}</td>
+          </tr>
+        `;
+      });
+    }
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = "login.html";
+    }
+</script>
+</body>
+</html>
