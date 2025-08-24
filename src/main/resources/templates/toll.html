@@ -1,167 +1,277 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Online Toll Gate Management System</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
   <style>
     body {
       margin: 0;
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background: #f5f5f5;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f2f3f8;
+      color: #333;
     }
+
     .container {
       display: flex;
       min-height: 100vh;
     }
+
+    /* Animate gradient background for sidebar */
+    @keyframes gradientShift {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
     .sidebar {
       width: 240px;
-      background: linear-gradient(180deg, #a084ca 60%, #8d72c3 100%);
+      background: linear-gradient(270deg, #8e44ad, #9b59b6, #bb6bd9, #a374d6);
+      background-size: 600% 600%;
+      animation: gradientShift 15s ease infinite;
       color: #fff;
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
-      padding-top: 32px;
-      box-shadow: 2px 0 12px rgba(160,132,202,0.08);
-      z-index: 2;
+      align-items: start;
+      padding: 30px 0;
+      box-shadow: 2px 0 12px rgba(0, 0, 0, 0.1);
+      position: relative;
+      z-index: 10;
     }
+
     .sidebar h2 {
+      font-size: 1.6em;
       text-align: center;
-      margin-bottom: 40px;
-      font-size: 1.3em;
+      margin: 0 auto 30px;
       width: 100%;
+      color: #fff;
+      filter: drop-shadow(0 0 6px rgba(255 255 255 / 0.7));
+      transition: transform 0.3s ease;
     }
+    .sidebar h2:hover {
+      transform: rotate(10deg) scale(1.1);
+    }
+
     .nav {
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 14px;
       width: 100%;
-      padding-left: 0;
     }
+
+    /* Link base */
     .nav a {
       color: #fff;
       text-decoration: none;
-      padding: 14px 36px;
-      border-radius: 30px 0 0 30px;
-      font-size: 1.08em;
+      padding: 14px 28px;
+      font-size: 1.15em;
+      border-left: 4px solid transparent;
+      transition:
+        color 0.3s ease,
+        padding-left 0.3s ease;
       display: flex;
       align-items: center;
-      gap: 12px;
-      transition: background 0.2s, color 0.2s, padding-left 0.2s;
+      gap: 14px;
       position: relative;
-      font-weight: 500;
-      letter-spacing: 0.5px;
+      user-select: none;
     }
-    .nav a.active, .nav a:hover {
+
+    /* Icon size & glow */
+    .nav a i {
+      font-size: 1.5em;
+      transition: transform 0.3s ease, filter 0.3s ease;
+      filter: drop-shadow(0 0 6px rgba(255 255 255 / 0.7));
+    }
+
+    /* Icon scale + glow on hover */
+    .nav a:hover i,
+    .nav a.active i {
+      transform: scale(1.25);
+      filter: drop-shadow(0 0 15px #fff);
+    }
+
+    /* Link text glow */
+    .nav a:hover,
+    .nav a.active {
+      color: #ffe6ff;
+      padding-left: 36px;
+    }
+
+    /* Animated underline sliding from left */
+    .nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 8px;
+      height: 3px;
+      width: 0;
       background: #fff;
-      color: #a084ca;
-      padding-left: 48px;
-      box-shadow: 0 2px 12px rgba(160,132,202,0.08);
+      border-radius: 3px;
+      transition: width 0.4s ease;
     }
-    .nav a::before {
-      content: '';
-      display: inline-block;
-      width: 22px;
-      height: 22px;
-      margin-right: 10px;
-      background-repeat: no-repeat;
-      background-size: 22px 22px;
-      opacity: 0.8;
+    .nav a:hover::after,
+    .nav a.active::after {
+      width: 100%;
     }
-    .nav a.active::before, .nav a:hover::before {
-      opacity: 1;
-    }
-    .nav a:nth-child(1)::before { background-image: url('data:image/svg+xml;utf8,<svg fill="%23a084ca" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3l10 9h-3v9h-6v-6h-2v6H5v-9H2z"/></svg>'); }
-    .nav a:nth-child(2)::before { background-image: url('data:image/svg+xml;utf8,<svg fill="%23a084ca" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M12 14c-4.418 0-8 1.79-8 4v2h16v-2c0-2.21-3.582-4-8-4z"/></svg>'); }
-    .nav a:nth-child(3)::before { background-image: url('data:image/svg+xml;utf8,<svg fill="%23a084ca" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05C15.64 13.36 17 14.28 17 15.5V19h7v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>'); }
-    .nav a:nth-child(4)::before { background-image: url('data:image/svg+xml;utf8,<svg fill="%23a084ca" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>'); }
-
-
 
     .main-content {
       flex: 1;
-      padding: 0;
       display: flex;
       flex-direction: column;
-      min-width: 0;
     }
+
     .header {
-      background: #a084ca;
-      color: #fff;
-      padding: 30px 0 20px 0;
+      background: #9b59b6;
+      color: white;
       text-align: center;
+      padding: 28px 15px;
       font-size: 2em;
-      font-weight: bold;
+      font-weight: 600;
       letter-spacing: 1px;
-      box-shadow: 0 2px 12px rgba(160,132,202,0.08);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      user-select: none;
     }
+
     .page-title {
-      background: #c1b2fa;
-      color: #4b3869;
       text-align: center;
-      padding: 18px 0;
+      padding: 20px 0;
       font-size: 1.3em;
-      font-weight: 500;
-      box-shadow: 0 2px 8px rgba(160,132,202,0.04);
+      background-color: #ede6f7;
+      color: #5e4c6f;
+      border-bottom: 1px solid #ddd;
+      user-select: none;
     }
+
     .image-section {
       display: flex;
       justify-content: center;
       align-items: center;
+      padding: 40px 15px;
       flex: 1;
-      padding: 40px 0;
     }
+
     .image-section img {
-      max-width: 92%;
-      max-height: 520px;
-      border-radius: 16px;
-      box-shadow: 0 4px 32px rgba(0,0,0,0.13);
+      max-width: 90%;
+      max-height: 500px;
+      border-radius: 15px;
+      border: 3px solid #ddd;
       background: #fff;
-      border: 2px solid #e0d7f3;
-      transition: box-shadow 0.2s, transform 0.2s;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.07);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
     }
+
     .image-section img:hover {
-      box-shadow: 0 8px 48px rgba(160,132,202,0.18);
-      transform: scale(1.01);
+      transform: scale(1.02);
+      box-shadow: 0 8px 40px rgba(155, 89, 182, 0.25);
     }
-    @media (max-width: 900px) {
-      .container { flex-direction: column; }
-      .sidebar { width: 100%; flex-direction: row; align-items: stretch; padding: 0; }
-      .nav { flex-direction: row; gap: 0; width: 100%; justify-content: space-around; }
-      .nav a { border-radius: 0; padding: 10px 0; font-size: 1em; justify-content: center; }
-      .nav a::before { display: none; }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 10px 0;
+        background: linear-gradient(270deg, #8e44ad, #9b59b6, #bb6bd9, #a374d6);
+        background-size: 600% 600%;
+        animation: gradientShift 15s ease infinite;
+      }
+
+      .sidebar h2 {
+        display: none; /* hide logo on mobile for space */
+      }
+
+      .nav {
+        flex-direction: row;
+        justify-content: space-around;
+        width: 100%;
+        padding: 0 10px;
+      }
+
+      .nav a {
+        padding: 10px 12px;
+        border-left: none;
+        font-size: 1.1em;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+      }
+
+      /* Underline moves below icon+text for mobile */
+      .nav a::after {
+        bottom: 4px;
+        height: 2px;
+      }
+
+      .nav a i {
+        font-size: 1.8em;
+      }
+
+      .header {
+        font-size: 1.5em;
+      }
+
+      .image-section img {
+        max-height: 240px;
+      }
     }
-    @media (max-width: 600px) {
-      .header, .page-title { font-size: 1.1em; padding: 12px 0; }
-      .image-section { padding: 10px 0; }
-      .image-section img { max-width: 100%; max-height: 220px; }
+
+    footer {
+      text-align: center;
+      padding: 12px;
+      background-color: #eee;
+      font-size: 0.95em;
+      color: #666;
+      user-select: none;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="sidebar">
-      <h2></h2>
-      <div class="nav">
-        <a href="#" class="active">HOME PAGE</a>
-        <a th:href="@{/user/login}">ADMIN</a>
-        <a href="#">STAFFS</a>
-        <a href="#">USERS</a>
-        <a th:href="@{/user/register}">REGISTER</a>
-      </div>
-    </div>
-    <div class="main-content">
-      <div class="header">
-        Online Toll Gate Management System
-      </div>
-      <div class="page-title">
-        Online Toll Gate Management System
-      </div>
-      <div class="image-section">
-        <img src="https://images.adsttc.com/media/images/6503/17e7/057e/d57f/32c5/2470/large_jpg/shaoxing-highway-toll-gate-of-huhangyong-expressway-atelier-rentian_6.jpg?1694701559" alt="Toll Gate Screenshot" height="100%" width="100%">
-      </div>
+
+<div class="container">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2><i class="bi bi-car-front"></i></h2>
+    <div class="nav">
+      <a href="#" class="active" title="Home"><i class="bi bi-house-fill"></i> Home</a>
+      <a th:href="@{/user/login}" title="Admin"><i class="bi bi-person-badge-fill"></i> Admin</a>
+      <a href="#" title="Staffs"><i class="bi bi-people-fill"></i> Staffs</a>
+      <a href="#" title="Users"><i class="bi bi-person-lines-fill"></i> Users</a>
+      <a th:href="@{/user/register}" title="Register"><i class="bi bi-pencil-square"></i> Register</a>
     </div>
   </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="header">
+      Online Toll Gate Management System
+    </div>
+
+    <div class="page-title">
+      Manage Toll Booths, Staffs, Vehicles & More!
+    </div>
+
+    <div class="image-section">
+      <img src="https://images.adsttc.com/media/images/6503/17e7/057e/d57f/32c5/2470/large_jpg/shaoxing-highway-toll-gate-of-huhangyong-expressway-atelier-rentian_6.jpg?1694701559"
+           alt="Toll Gate Image" />
+    </div>
+
+    <footer>
+      &copy; 2025 Online Toll Gate Management System. All rights reserved.
+    </footer>
+  </div>
+</div>
+
 </body>
 </html>
-

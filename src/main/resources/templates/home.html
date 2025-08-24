@@ -1,116 +1,442 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Toll Gate - Home</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Toll Gate - Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+    <style>
+        body {
+          background-color: #f8f9fa;
+          display: flex;
+          min-height: 100vh;
+          overflow-x: hidden;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          transition: background-color 0.3s ease;
+        }
+
+        /* Sidebar */
+        nav.sidebar {
+          position: fixed;
+          top: 0; left: 0; bottom: 0;
+          width: 250px;
+          background: linear-gradient(135deg, #0d6efd 0%, #6610f2 100%);
+          color: white;
+          display: flex;
+          flex-direction: column;
+          padding: 2rem 1rem;
+          box-shadow: 4px 0 25px rgba(13, 110, 253, 0.7);
+          transition: width 0.3s ease;
+          z-index: 999;
+        }
+        nav.sidebar.collapsed {
+          width: 75px;
+        }
+
+        /* Sidebar Header */
+        .sidebar-header {
+          font-weight: 700;
+          font-size: 1.8rem;
+          margin-bottom: 3rem;
+          text-align: center;
+          letter-spacing: 0.1em;
+          user-select: none;
+          color: #ffdd57;
+          filter: drop-shadow(0 0 8px #ffd633);
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .sidebar-header i {
+          margin-right: 0.6rem;
+          font-size: 2.2rem;
+          animation: spin 8s linear infinite;
+          filter: drop-shadow(0 0 8px #ffd633);
+          vertical-align: middle;
+        }
+
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+
+        /* Sidebar Links */
+        .nav-links {
+          flex-grow: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 1.4rem;
+        }
+        .nav-links a {
+          display: flex;
+          align-items: center;
+          font-weight: 600;
+          color: white;
+          text-decoration: none;
+          font-size: 1.15rem;
+          padding: 0.7rem 1.2rem;
+          border-radius: 12px;
+          transition: background-color 0.3s ease, box-shadow 0.3s ease, padding-left 0.3s ease;
+          user-select: none;
+          white-space: nowrap;
+          box-shadow: 0 0 10px transparent;
+        }
+        nav.sidebar.collapsed .nav-links a {
+          justify-content: center;
+          font-size: 0;
+          padding-left: 0;
+          position: relative;
+        }
+        nav.sidebar.collapsed .nav-links a .link-text {
+          display: none;
+        }
+        .nav-links a i {
+          font-size: 1.7rem;
+          margin-right: 1rem;
+          filter: drop-shadow(0 0 5px rgba(255 255 255 / 0.9));
+          transition: transform 0.3s ease;
+        }
+        nav.sidebar.collapsed .nav-links a i {
+          margin-right: 0;
+          font-size: 2.3rem;
+        }
+        .nav-links a:hover {
+          background-color: #ffd633;
+          color: #0d6efd;
+          box-shadow: 0 0 15px #ffd633cc;
+          padding-left: 2.5rem;
+        }
+        nav.sidebar.collapsed .nav-links a:hover {
+          padding-left: 0;
+          box-shadow: 0 0 15px #ffd633cc;
+        }
+        .nav-links a:hover i {
+          transform: rotate(20deg) scale(1.3);
+        }
+        .nav-links a.active {
+          background-color: #ffc107;
+          color: #0d6efd;
+          box-shadow: 0 0 25px #ffc107dd;
+        }
+
+        /* Sidebar Toggle Button */
+        .sidebar-toggle {
+          background: transparent;
+          border: none;
+          color: white;
+          font-size: 1.9rem;
+          cursor: pointer;
+          margin-top: auto;
+          filter: drop-shadow(0 0 8px #ffd633);
+          transition: transform 0.4s ease, color 0.3s ease;
+          user-select: none;
+          align-self: center;
+          padding: 0.3rem;
+          border-radius: 50%;
+        }
+        .sidebar-toggle:hover {
+          color: #ffc107;
+          transform: scale(1.3);
+        }
+
+        /* Main content */
+        main.main-content {
+          margin-left: 250px;
+          padding: 2.5rem 3rem;
+          flex-grow: 1;
+          width: 100%;
+          transition: margin-left 0.3s ease;
+        }
+        nav.sidebar.collapsed + main.main-content {
+          margin-left: 75px;
+        }
+
+        /* Navbar tweaks */
+        .navbar-brand span {
+          font-weight: bold;
+          font-size: 1.5rem;
+          user-select: none;
+        }
+
+        /* Welcome card icon bounce */
+        .welcome-card h4 i {
+          color: #0d6efd;
+          animation: bounce 2.5s infinite ease-in-out;
+          vertical-align: middle;
+          margin-left: 0.5rem;
+        }
+        @keyframes bounce {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-8px); }
+        }
+
+        /* Welcome card styling */
+        .welcome-card {
+          background-color: #ffffff;
+          border-left: 5px solid #0d6efd;
+          box-shadow: 0 6px 18px rgb(13 110 253 / 0.25);
+          transition: box-shadow 0.3s ease;
+          user-select: none;
+        }
+        .welcome-card:hover {
+          box-shadow: 0 10px 30px rgb(13 110 253 / 0.45);
+        }
+
+        /* Buttons animations */
+        button.btn-primary, button.btn-success, button.btn-outline-light {
+          border-radius: 12px;
+          font-weight: 600;
+          transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+          user-select: none;
+        }
+        button.btn-primary:hover, button.btn-success:hover, button.btn-outline-light:hover {
+          box-shadow: 0 8px 22px rgb(13 110 253 / 0.6);
+          transform: scale(1.07);
+        }
+
+        /* Transactions Table */
+        .card-header {
+          background-color: #343a40;
+          color: white;
+          user-select: none;
+        }
+        .table-dark {
+          user-select: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+          nav.sidebar {
+            position: fixed;
+            width: 70px;
+          }
+          nav.sidebar.collapsed {
+            width: 0;
+            overflow: hidden;
+          }
+          main.main-content {
+            margin-left: 70px !important;
+            padding: 1.5rem 1rem;
+          }
+          nav.sidebar.collapsed + main.main-content {
+            margin-left: 0 !important;
+          }
+          .sidebar-toggle {
+            font-size: 1.6rem;
+          }
+        }
+    </style>
 </head>
-<body class="bg-light">
-<nav class="navbar navbar-dark bg-dark px-3">
-    <span class="navbar-brand">Toll Gate System</span>
-    <button id="logoutBtn" class="btn btn-danger">Logout</button></nav>
+<body>
 
-<div class="container mt-4">
-    <h3>Welcome, <span id="user"></span> 👋</h3>
+<!-- Sidebar -->
+<nav class="sidebar" id="sidebar">
+    <div class="sidebar-header" title="Toll Gate System">
+        <i class="bi bi-truck-front-fill"></i> Toll Gate
+    </div>
+    <div class="nav-links">
+        <a href="#" class="active" title="Dashboard">
+            <i class="bi bi-speedometer2"></i>
+            <span class="link-text">Dashboard</span>
+        </a>
+        <a href="#" title="Register Vehicle">
+            <i class="bi bi-plus-circle-fill"></i>
+            <span class="link-text">Register Vehicle</span>
+        </a>
+        <a href="#" title="Transactions">
+            <i class="bi bi-list-ul"></i>
+            <span class="link-text">Transactions</span>
+        </a>
+        <a href="#" title="Reports">
+            <i class="bi bi-graph-up-arrow"></i>
+            <span class="link-text">Reports</span>
+        </a>
+        <a href="#" title="Settings">
+            <i class="bi bi-gear-fill"></i>
+            <span class="link-text">Settings</span>
+        </a>
+    </div>
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle Sidebar">
+        <i class="bi bi-chevron-left"></i>
+    </button>
+</nav>
 
-    <div class="card p-3 mt-3">
-        <h5>Register Vehicle</h5>
-        <form id="vehicleForm" class="row g-2">
-            <div class="col-md-6">
-                <input type="text" id="plateNumber" class="form-control" placeholder="Plate Number" required>
-            </div>
-            <div class="col-md-6">
-                <select id="type" class="form-select">
-                    <option>Car</option>
-                    <option>Truck</option>
-                    <option>Bus</option>
-                </select>
-            </div>
-            <div class="col-12">
-                <button class="btn btn-primary">Add Vehicle</button>
-            </div>
-        </form>
+<!-- Main Content -->
+<main class="main-content">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 mb-4 rounded-3 shadow-sm">
+        <a class="navbar-brand" href="#"><span><i class="bi bi-truck-front-fill"></i> Toll Gate System</span></a>
+        <div class="ms-auto">
+            <button id="logoutBtn" class="btn btn-outline-light"><i class="bi bi-box-arrow-right"></i> Logout</button>
+        </div>
+    </nav>
+
+    <!-- Welcome Card -->
+    <div class="card welcome-card shadow-sm mb-4">
+        <div class="card-body">
+            <h4 class="card-title">Welcome back, <span id="user" class="text-primary"></span> <i class="bi bi-emoji-smile-fill"></i></h4>
+            <p class="card-text">Manage vehicle registrations and view all toll transactions below.</p>
+        </div>
     </div>
 
-    <div class="card p-3 mt-3">
-        <h5>All Transactions</h5>
-        <button class="btn btn-success mb-2" onclick="loadTransactions()">Refresh</button>
-        <table class="table table-bordered">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Vehicle</th>
-                <th>Amount</th>
-                <th>Time</th>
-            </tr>
-            </thead>
-            <tbody id="txTable"></tbody>
-        </table>
+    <!-- Register Vehicle -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header"><i class="bi bi-plus-circle-fill"></i> Register Vehicle</div>
+        <div class="card-body">
+            <form id="vehicleForm" class="row g-3">
+                <div class="col-md-6">
+                    <input
+                            type="text"
+                            id="plateNumber"
+                            class="form-control"
+                            placeholder="Enter Plate Number"
+                            required
+                            autocomplete="off"
+                    />
+                </div>
+                <div class="col-md-6">
+                    <select id="type" class="form-select" required>
+                        <option disabled selected>Select Vehicle Type</option>
+                        <option>Car</option>
+                        <option>Truck</option>
+                        <option>Bus</option>
+                    </select>
+                </div>
+                <div class="col-12 text-end">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle"></i> Add Vehicle
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
+    <!-- Transactions Table -->
+    <div class="card shadow-sm">
+        <div
+                class="card-header d-flex justify-content-between align-items-center"
+        >
+            <span><i class="bi bi-list-ul"></i> Toll Transactions</span>
+            <button
+                    class="btn btn-success btn-sm"
+                    onclick="loadTransactions()"
+                    title="Refresh Transactions"
+            >
+                <i class="bi bi-arrow-clockwise"></i> Refresh
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Vehicle</th>
+                        <th>Amount</th>
+                        <th>Time</th>
+                    </tr>
+                    </thead>
+                    <tbody id="txTable">
+                    <!-- Transactions will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    document.getElementById("user").textContent = localStorage.getItem("username");
+    // Display username from localStorage
+    document.getElementById("user").textContent = localStorage.getItem("username") || "User";
 
+    // Sidebar toggle logic
+    const sidebar = document.getElementById("sidebar");
+    const toggleBtn = document.getElementById("sidebarToggle");
+    const toggleIcon = toggleBtn.querySelector("i");
+
+    toggleBtn.addEventListener("click", () => {
+      sidebar.classList.toggle("collapsed");
+
+      // Change toggle icon direction with smooth rotation
+      if (sidebar.classList.contains("collapsed")) {
+        toggleIcon.classList.remove("bi-chevron-left");
+        toggleIcon.classList.add("bi-chevron-right");
+      } else {
+        toggleIcon.classList.remove("bi-chevron-right");
+        toggleIcon.classList.add("bi-chevron-left");
+      }
+    });
+
+    // Register vehicle
     document.getElementById("vehicleForm").addEventListener("submit", async (e) => {
       e.preventDefault();
-      const plateNumber = document.getElementById("plateNumber").value;
+      const plateNumber = document.getElementById("plateNumber").value.trim();
       const type = document.getElementById("type").value;
 
-      await fetch("http://localhost:8080/api/toll/vehicle", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ plateNumber, type })
-      });
-      alert("Vehicle Registered!");
+      if (!plateNumber || !type) {
+        alert("Please fill all fields!");
+        return;
+      }
+
+      try {
+        const response = await fetch("/api/toll/vehicle", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ plateNumber, type }),
+        });
+
+        if (!response.ok) throw new Error("Failed to register vehicle.");
+
+        alert("✅ Vehicle registered successfully!");
+        document.getElementById("vehicleForm").reset();
+        loadTransactions(); // Optional: reload transactions after new vehicle
+      } catch (error) {
+        alert("❌ Error registering vehicle.");
+        console.error(error);
+      }
     });
 
+    // Load all transactions
     async function loadTransactions() {
-      const res = await fetch("http://localhost:8080/api/toll/transactions");
-      const data = await res.json();
+      try {
+        const res = await fetch("http://localhost:8080/api/toll/transactions");
+        const data = await res.json();
 
-      const tbody = document.getElementById("txTable");
-      tbody.innerHTML = "";
-      data.forEach(tx => {
-        tbody.innerHTML += `
-          <tr>
-            <td>${tx.id}</td>
-            <td>${tx.vehicle.plateNumber}</td>
-            <td>${tx.tollAmount}</td>
-            <td>${tx.timestamp}</td>
-          </tr>
-        `;
-      });
+        const tbody = document.getElementById("txTable");
+        tbody.innerHTML = "";
+
+        data.forEach((tx) => {
+          tbody.innerHTML += `
+            <tr>
+              <td>${tx.id}</td>
+              <td>${tx.vehicle.plateNumber}</td>
+              <td>₦${tx.tollAmount}</td>
+              <td>${new Date(tx.timestamp).toLocaleString()}</td>
+            </tr>
+          `;
+        });
+      } catch (error) {
+        console.error("Failed to load transactions:", error);
+      }
     }
 
-    function logout() {
-      localStorage.clear();
-      window.location.href = "login.html";
-    }
-</script>
-<script>
+    // Logout
     document.getElementById("logoutBtn").addEventListener("click", async () => {
       try {
-        await fetch('/api/user/logout', { method: "POST" });
+        await fetch("/api/user/logout", { method: "POST" });
       } catch (e) {
         console.log("Server logout skipped:", e);
       }
-      // Clear client storage
-      localStorage.removeItem("username");
+     localStorage.removeItem("username");
       window.location.href = '/user/login'; // Redirect back to login page
     });
+
+    // Load transactions on page load
+    window.addEventListener("load", loadTransactions);
 </script>
-<script>
-    document.getElementById("logoutBtn").addEventListener("click", async () => {
-      try {
-        await fetch('/api/user/logout', { method: "POST" });
-      } catch (e) {
-        console.log("Server logout skipped:", e);
-      }
-      // Clear client storage
-      localStorage.removeItem("username");
-      window.location.href = '/user/login'; // Redirect back to login page
-    });
-</script>
+
 </body>
 </html>

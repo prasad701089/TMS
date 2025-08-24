@@ -17,6 +17,7 @@ public class UserController {
     public String userDashboard() {
         return "user_dashboard";
     }
+
     @GetMapping("/staff/dashboard")
     public String staffDashboard() {
         return "staff_dashboard";

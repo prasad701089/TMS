@@ -18,6 +18,8 @@ public class User {
         private Long id;
 
         private String username;
+        private String email;
+        private String phone;
         private String password; // (hash in real app)
         private String role; // ADMIN, OPERATOR
     }

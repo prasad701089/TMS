@@ -6,7 +6,7 @@ async function fetchStaffs() {
 		const res = await fetch('/api/user/all');
 		if (res.ok) {
 			const allUsers = await res.json();
-			staffs = allUsers.filter(u => u.role === 'STAFF');
+			staffs = allUsers.filter(u => u.role === 'USER');
 			renderStaffs();
 		} else {
 			alert('Failed to fetch staff from server.');
@@ -38,7 +38,7 @@ function renderStaffs() {
 document.getElementById('addStaffBtn').addEventListener('click', function() {
 	document.getElementById('staffForm').reset();
 	document.getElementById('staffId').value = '';
-	document.getElementById('staffModalLabel').textContent = 'Add Staff';
+	document.getElementById('staffModalLabel').textContent = 'Add User';
 });
 
 // Save staff (add or edit)
