@@ -6,7 +6,7 @@ async function fetchStaffs() {
 		const res = await fetch('/api/user/all');
 		if (res.ok) {
 			const allUsers = await res.json();
-			staffs = allUsers.filter(u => u.role === 'USER');
+			staffs = allUsers.filter(u => u.role === 'STAFF');
 			renderStaffs();
 		} else {
 			alert('Failed to fetch staff from server.');

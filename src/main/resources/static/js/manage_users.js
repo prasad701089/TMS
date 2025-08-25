@@ -1,5 +1,6 @@
 
 
+
 let users = [];
 
 async function fetchUsers() {
@@ -7,6 +8,7 @@ async function fetchUsers() {
 		const res = await fetch('/api/user/all');
 		if (res.ok) {
 			users = await res.json();
+			users = users.filter(u => u.role === 'USER');
 			renderUsers();
 		} else {
 			alert('Failed to fetch users from server.');

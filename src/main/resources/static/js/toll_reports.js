@@ -1,14 +1,41 @@
+// Dashboard button navigation
+document.addEventListener('DOMContentLoaded', function() {
+	const dashBtn = document.getElementById('dashboardBtn');
+	if (dashBtn) {
+		dashBtn.addEventListener('click', function() {
+			// Change the URL below if your dashboard route is different
+			window.location.href = '/user/admin/dashboard';
+		});
+	}
+});
 
 // Example: Fetch and display toll reports (replace with real API call)
 
 document.addEventListener('DOMContentLoaded', function() {
-	// Simulated data (replace with API call for real data)
-	let reports = [
-		{ date: '2025-08-19', vehicles: 120, amount: 12000 },
-		{ date: '2025-08-18', vehicles: 98, amount: 9800 },
-		{ date: '2025-08-17', vehicles: 110, amount: 11000 },
-		{ date: '2025-08-16', vehicles: 105, amount: 10500 }
-	];
+	let reports = [];
+
+	// Fetch real data from backend
+	fetch('/api/toll-reports')
+		.then(response => response.json())
+		.then(data => {
+			reports = aggregateReports(data);
+			renderTable(reports);
+		})
+		.catch(err => {
+			console.error('Failed to fetch toll reports:', err);
+		});
+
+	// Helper to aggregate transactions by date
+	function aggregateReports(data) {
+		const map = {};
+		data.forEach(tx => {
+			const date = tx.timestamp ? tx.timestamp.split('T')[0] : 'Unknown';
+			if (!map[date]) map[date] = { date, vehicles: 0, amount: 0 };
+			map[date].vehicles += 1;
+			map[date].amount += tx.tollAmount;
+		});
+		return Object.values(map).sort((a, b) => b.date.localeCompare(a.date));
+	}
 
 	let container = document.querySelector('.container');
 
@@ -65,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		document.getElementById('totalAmount').textContent = totalAmount;
 	}
 
-	// Initial render
+	// Initial render (empty, will be filled after fetch)
 	renderTable(reports);
 
 	// Filter logic
