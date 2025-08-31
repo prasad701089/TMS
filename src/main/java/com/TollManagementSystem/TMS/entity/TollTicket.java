@@ -15,6 +15,7 @@ public class TollTicket {
 
     private String branchNo;
     private String state;
+    private String district;
     private String nhNumber;
     private String tollName;
     private String tollKm;
