@@ -26,18 +26,17 @@
 </head>
 <body>
 <div class="profile-card text-center">
-    <img src="https://ui-avatars.com/api/?name=User&background=a084ca&color=fff&size=128" class="profile-avatar" alt="User Avatar">
-    <h3 id="profileName">User Name</h3>
-    <p class="text-muted mb-1"><span id="profileEmail">user@email.com</span></p>
-    <p><span class="badge bg-primary" id="profileRole">USER</span></p>
+    <img th:src="@{'https://ui-avatars.com/api/?name=' + ${user.username} + '&background=a084ca&color=fff&size=128'}" class="profile-avatar" alt="User Avatar">
+    <h3 id="profileName" th:text="${user.username}">User Name</h3>
+    
+    <p><span class="badge bg-primary" id="profileRole" th:text="${user.role}">USER</span></p>
     <hr>
     <div class="text-start">
-        <p><strong>Username:</strong> <span id="profileUsername">user1</span></p>
-        <p><strong>Mobile:</strong> <span id="profileMobile">9876543210</span></p>
-        <p><strong>Address:</strong> <span id="profileAddress">123 Main Street, City</span></p>
+        <p><strong>Username:</strong> <span id="profileUsername" th:text="${user.username}">user1</span></p>
+        <p ><strong>Email:</strong><span id="profileEmail" th:text="${user.email}">user@email.com</span></p>
+        <p><strong>Mobile:</strong> <span id="profilePhone" th:text="${user.phone}">9876543210</span></p>
     </div>
     <a href="/user/user/dashboard" class="btn btn-outline-primary mt-3">Back to Dashboard</a>
 </div>
-<script src="/js/my_profile.js"></script>
 </body>
 </html>

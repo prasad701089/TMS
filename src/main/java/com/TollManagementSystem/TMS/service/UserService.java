@@ -1,3 +1,4 @@
+
 package com.TollManagementSystem.TMS.service;
 
 import com.TollManagementSystem.TMS.entity.User;
@@ -6,6 +7,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
+
+    public User getUserByUsername(String username) {
+        return userRepo.findByUsername(username);
+    }
 
     public User updateUser(Long id, User user) {
         User existing = userRepo.findById(id).orElse(null);

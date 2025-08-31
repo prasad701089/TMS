@@ -14,12 +14,32 @@ public class UserController {
         return "book_toll_ticket_user";
     }
     @GetMapping("/my-profile")
-    public String myProfile() {
+    public String myProfile(Model model, @SessionAttribute(name = "username", required = false) String username) {
+        if (username != null) {
+            User user = userService.getUserByUsername(username);
+            model.addAttribute("user", user);
+        }
         return "my_profile";
     }
     @GetMapping("/user/dashboard")
-    public String userDashboard() {
+    public String userDashboard(Model model, @SessionAttribute(name = "username", required = false) String username) {
+        if (username != null) {
+            User user = userService.getUserByUsername(username);
+            model.addAttribute("user", user);
+
+            // Fetch total tolls paid and total amount paid for this user
+            int totalTollsPaid = tollTicketRepository.countByUsername(username);
+            double totalAmountPaid = tollTicketRepository.sumAmountByUsername(username);
+            model.addAttribute("totalTollsPaid", totalTollsPaid);
+            model.addAttribute("totalAmountPaid", totalAmountPaid);
+        }
         return "user_dashboard";
+    }
+    private final TollTicketRepository tollTicketRepository;
+
+    public UserController(UserService userService, TollTicketRepository tollTicketRepository) {
+        this.userService = userService;
+        this.tollTicketRepository = tollTicketRepository;
     }
 
     @GetMapping("/staff/dashboard")

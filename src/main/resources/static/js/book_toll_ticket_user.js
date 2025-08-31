@@ -63,6 +63,7 @@ document.addEventListener("DOMContentLoaded", function() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
       });
+
       // Always show price after submit, regardless of booking success
       fetchAndShowPrice(data.vehicleType, data.plan);
       if (res.ok) {
@@ -83,5 +84,9 @@ document.addEventListener("DOMContentLoaded", function() {
       fetchAndShowPrice(data.vehicleType, data.plan);
       if (errorMsg) errorMsg.classList.remove("d-none");
     }
+  });
+  document.getElementById('logoutBtn').addEventListener('click', function(e) {
+  e.preventDefault();
+  window.location.href = '/user/login';
   });
 });
