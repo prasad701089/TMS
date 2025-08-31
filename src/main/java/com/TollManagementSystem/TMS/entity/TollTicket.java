@@ -23,4 +23,6 @@ public class TollTicket {
     private String vehicleType;
     private String plan;
     private String vehicleNumber;
+
+    private Double amount; // price for this transaction
 }

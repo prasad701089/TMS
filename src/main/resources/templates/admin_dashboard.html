@@ -275,27 +275,42 @@
                 <div class="col-md-4">
                     <div class="card p-4 text-center">
                         <h5>Total Staffs</h5>
-                        <h2 id="staffCount">--</h2>
+                        <h2 id="staffCount" th:text="${staffCount}">--</h2>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card p-4 text-center">
                         <h5>Total Users</h5>
-                        <h2 id="userCount">--</h2>
+                        <h2 id="userCount" th:text="${userCount}">--</h2>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card p-4 text-center">
                         <h5>Total Tolls</h5>
-                        <h2 id="tollCount">--</h2>
+                        <h2 id="tollCount" th:text="${tollCount}">--</h2>
                     </div>
                 </div>
             </div>
             <div class="mt-5">
-                <h4>Recent Activities</h4>
-                <ul class="list-group" id="activityList">
-                    <li class="list-group-item">No recent activities.</li>
-                </ul>
+                <h4>Recent Toll Transactions</h4>
+                <div class="row g-3">
+                  <div class="col-md-4" th:if="${#lists.isEmpty(recentTransactions)}">
+                    <div class="card p-3 text-center shadow-sm">
+                      <div class="text-muted">No recent activities.</div>
+                    </div>
+                  </div>
+                  <div class="col-md-4" th:each="tx : ${recentTransactions}">
+                    <div class="card p-3 h-100 shadow-sm border-0" style="border-radius: 14px; background: linear-gradient(135deg, #f5f0fa 60%, #eae1f9 100%);">
+                      <div class="d-flex align-items-center mb-2">
+                        <i class="bi bi-cash-coin me-2" style="font-size: 1.7rem; color: #6a4d9a;"></i>
+                        <span class="fw-bold" th:text="${tx.tollName}">Toll Name</span>
+                      </div>
+                      <div class="mb-1"><span class="badge bg-primary me-1" th:text="${tx.vehicleType}">Type</span> <span class="badge bg-info text-dark" th:text="${tx.plan}">Plan</span></div>
+                      <div class="mb-1"><i class="bi bi-car-front"></i> <span th:text="${tx.vehicleNumber}">Vehicle</span></div>
+                      <div class="mb-1"><i class="bi bi-currency-rupee"></i> <span class="fw-bold text-success" th:text="${tx.amount}">Amount</span></div>
+                    </div>
+                  </div>
+                </div>
             </div>
         </main>
     </div>

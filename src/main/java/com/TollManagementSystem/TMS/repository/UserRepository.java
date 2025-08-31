@@ -3,7 +3,12 @@ package com.TollManagementSystem.TMS.repository;
 import com.TollManagementSystem.TMS.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository  extends JpaRepository<User, Long>{
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-        User findByUsername(String username);
-    }
+public interface UserRepository  extends JpaRepository<User, Long>{
+    User findByUsername(String username);
+
+    @Query("SELECT COUNT(u) FROM User u WHERE u.role = :role")
+    int countByRole(@Param("role") String role);
+}
