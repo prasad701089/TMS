@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Book Toll Ticket</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+    <style>
+        body {
+            background: #f5f7fa;
+            font-family: 'Segoe UI', sans-serif;
+            overflow-x: hidden;
+            transition: background 0.3s ease;
+            min-height: 100vh;
+            display: flex;
+        }
+        .sidebar {
+            height: 100vh;
+            background: linear-gradient(to bottom, #6f42c1, #a084ca);
+            color: #fff;
+            padding: 30px 0;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 230px;
+            transition: width 0.3s ease;
+            box-shadow: 4px 0 15px rgba(111, 66, 193, 0.7);
+            z-index: 1000;
+        }
+        .sidebar.collapsed {
+            width: 70px;
+            padding: 30px 10px;
+        }
+        .sidebar .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .sidebar .nav-link {
+            color: #fff;
+            font-weight: 600;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 1.1rem;
+            border-radius: 30px 0 0 30px;
+            position: relative;
+            transition: background 0.3s ease, color 0.3s ease, padding-left 0.3s ease;
+            user-select: none;
+            white-space: nowrap;
+        }
+        .sidebar.collapsed .nav-link {
+            padding-left: 16px;
+            justify-content: center;
+            font-size: 0;
+            position: relative;
+        }
+        .sidebar.collapsed .nav-link .link-text {
+            display: none;
+        }
+        .sidebar .nav-link i {
+            font-size: 1.7rem;
+            transition: transform 0.3s ease, filter 0.3s ease;
+            filter: drop-shadow(0 0 6px rgba(255 255 255 / 0.85));
+        }
+        .sidebar .nav-link.active,
+        .sidebar .nav-link:hover {
+            background: #fff;
+            color: #6f42c1;
+            box-shadow: 0 0 18px 2px #6f42c1;
+            padding-left: 36px;
+            cursor: pointer;
+        }
+        .sidebar.collapsed .nav-link.active,
+        .sidebar.collapsed .nav-link:hover {
+            padding-left: 0;
+        }
+        .sidebar .nav-link.active i,
+        .sidebar .nav-link:hover i {
+            animation: iconBounce 0.7s ease infinite alternate;
+            filter: drop-shadow(0 0 12px #6f42c1);
+            transform-origin: center bottom;
+        }
+        @keyframes iconBounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-5px); }
+        }
+        #sidebarToggle {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #fff;
+            color: #6f42c1;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 0 15px #6f42c1cc;
+            transition: transform 0.4s ease, box-shadow 0.3s ease;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1100;
+        }
+        #sidebarToggle:hover {
+            transform: translateX(-50%) scale(1.2);
+            box-shadow: 0 0 25px #6f42c1;
+        }
+        .main-content {
+            margin-left: 230px;
+            padding: 40px 30px;
+            transition: margin-left 0.3s ease;
+        }
+        .sidebar.collapsed ~ .main-content {
+            margin-left: 70px;
+        }
+        /* Existing glass-card and form styles... */
+        .glass-card { background: rgba(255,255,255,0.85); border-radius: 1.5rem; box-shadow: 0 8px 32px 0 rgba(162,89,230,0.18), 0 1.5px 8px 0 rgba(162,89,230,0.10); backdrop-filter: blur(8px); border: 1.5px solid #e0d7f7; overflow: hidden; transition: box-shadow 0.3s, transform 0.2s; }
+        .glass-card:hover { box-shadow: 0 16px 48px 0 rgba(162,89,230,0.25), 0 3px 16px 0 rgba(162,89,230,0.13); transform: translateY(-4px) scale(1.02); }
+        .card-header { background: linear-gradient(90deg, #a259e6 60%, #6a82fb 100%); color: #fff; font-weight: bold; font-size: 1.3rem; letter-spacing: 1px; border-bottom: none; display: flex; align-items: center; gap: 0.7rem; box-shadow: 0 2px 12px #a259e655; }
+        .card-header i { font-size: 2rem; animation: ticket-bounce 2.5s infinite; filter: drop-shadow(0 0 8px #fff7); }
+        @keyframes ticket-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        .form-label { color: #a259e6; font-weight: 600; letter-spacing: 0.5px; }
+        .form-control, .form-select { border-radius: 0.7rem; border: 1.5px solid #e0d7f7; box-shadow: none; transition: border-color 0.2s; }
+        .form-control:focus, .form-select:focus { border-color: #a259e6; box-shadow: 0 0 0 2px #a259e633; }
+        .btn-primary { background: linear-gradient(90deg, #a259e6 60%, #6a82fb 100%); border: none; border-radius: 0.8rem; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.5px; box-shadow: 0 4px 16px #a259e633; transition: background 0.3s, transform 0.2s, box-shadow 0.3s; }
+        .btn-primary:hover { background: linear-gradient(90deg, #6a82fb 60%, #a259e6 100%); transform: scale(1.06); box-shadow: 0 8px 32px #a259e655; }
+        .alert-success, .alert-danger { border-radius: 0.7rem; font-weight: 600; letter-spacing: 0.5px; font-size: 1.05rem; }
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                width: 70px;
+                padding: 20px 10px;
+                height: 100vh;
+            }
+            .sidebar.collapsed {
+                width: 0;
+                padding: 0;
+                overflow: hidden;
+                box-shadow: none;
+            }
+            .sidebar .nav-link {
+                justify-content: center;
+                font-size: 0;
+                padding: 12px 10px;
+            }
+            .sidebar.collapsed .nav-link {
+                padding-left: 10px !important;
+            }
+            .sidebar .nav-link .link-text {
+                display: none;
+            }
+            .main-content {
+                margin-left: 70px !important;
+                padding: 20px 15px !important;
+            }
+            .sidebar.collapsed ~ .main-content {
+                margin-left: 0 !important;
+            }
+            #sidebarToggle {
+                left: 15px;
+                bottom: 15px;
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+<nav class="sidebar" id="sidebar">
+    <ul class="nav flex-column px-3">
+        <li class="nav-item">
+            <a class="nav-link active" href="/user/book-toll-ticket" id="bookTollTicketBtn" title="Book Toll Ticket">
+                <i class="bi bi-ticket-perforated"></i>
+                <span class="link-text">Book Toll Ticket</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/user/user/dashboard" title="Dashboard">
+                <i class="bi bi-speedometer2"></i>
+                <span class="link-text">Dashboard</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/user/my-profile" title="My Profile">
+                <i class="bi bi-person"></i>
+                <span class="link-text">My Profile</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" id="transactionsBtn" title="My Transactions">
+                <i class="bi bi-credit-card"></i>
+                <span class="link-text">My Transactions</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="logoutBtn" title="Logout">
+                <i class="bi bi-box-arrow-right"></i>
+                <span class="link-text">Logout</span>
+            </a>
+        </li>
+    </ul>
+    <button id="sidebarToggle" aria-label="Toggle Sidebar" title="Toggle Sidebar">
+        <i class="bi bi-chevron-left"></i>
+    </button>
+</nav>
+<div class="main-content">
+<div style="flex:1; display:flex; align-items:center; justify-content:center; min-height:100vh;">
+    <div style="width:100%; max-width:1100px;">
+        <div class="glass-card" style="margin:0 auto;">
+                <div class="card-header">
+                    <i class="bi bi-ticket-perforated"></i> Book Toll Ticket
+                </div>
+                <div class="card-body">
+                    <form id="bookTollFormUser" class="row g-3">
+                        <div class="col-md-3">
+                            <label class="form-label fw-bold">Branch No</label>
+                            <input type="text" class="form-control" id="branchNo" required />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-bold">State</label>
+                            <input type="text" class="form-control" id="state" required />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-bold">NH Number</label>
+                            <input type="text" class="form-control" id="nhNumber" required />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-bold">Toll Name</label>
+                            <input type="text" class="form-control" id="tollName" required />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-bold">Toll KM</label>
+                            <input type="text" class="form-control" id="tollKm" required />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-bold">Section</label>
+                            <input type="text" class="form-control" id="section" required />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-bold">Select Vehicle Type</label>
+                            <select class="form-select" id="vehicleType" required>
+                                <option value="">Choose...</option>
+                                <option>Car</option>
+                                <option>Jeep</option>
+                                <option>Van</option>
+                                <option>LMV</option>
+                                <option>Three wheelers</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-bold">Select Plan</label>
+                            <select class="form-select" id="plan" required>
+                                <option value="">Choose...</option>
+                                <option>Single</option>
+                                <option>Return</option>
+                                <option>Monthly</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-bold">Vehicle Number</label>
+                            <input type="text" class="form-control" id="vehicleNumber" required />
+                        </div>
+                        <div class="col-12 d-flex justify-content-center mt-3">
+                            <button type="submit" class="btn btn-primary px-4 py-2">
+                                <i class="bi bi-check2-circle"></i> Submit
+                            </button>
+                        </div>
+                    </form>
+                    <div id="ticketSuccessUser" class="alert alert-success mt-3 d-none" role="alert">
+                        Toll ticket booked successfully!
+                    </div>
+                    <div id="ticketErrorUser" class="alert alert-danger mt-3 d-none" role="alert">
+                        Failed to book toll ticket. Please try again.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/book_toll_ticket_user.js"></script>
+</body>
+</html>

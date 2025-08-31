@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/user")
 public class UserController {
+    @GetMapping("/book-toll-ticket")
+    public String bookTollTicketUser() {
+        return "book_toll_ticket_user";
+    }
     @GetMapping("/my-profile")
     public String myProfile() {
         return "my_profile";
@@ -30,6 +34,11 @@ public class UserController {
     @GetMapping("/manage-users")
     public String manageUsers() {
         return "manage_users";
+    }
+    @GetMapping("/ticket")
+    public String ticketpage()
+    {
+        return "book_toll_ticket";
     }
 
     @GetMapping("/toll-reports")

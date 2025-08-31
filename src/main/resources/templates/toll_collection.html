@@ -43,6 +43,50 @@
     </form>
     <div id="tollResult"></div>
 </div>
+</div>
+<!-- Dashboard Floating Button -->
+<button id="dashboardBtn" class="dashboard-fab" title="Go to Dashboard">
+    <i class="bi bi-speedometer2"></i>
+</button>
+<style>
+    .dashboard-fab {
+        position: fixed;
+        bottom: 32px;
+        right: 32px;
+        z-index: 1000;
+        border-radius: 50%;
+        width: 56px;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.6rem;
+        box-shadow: 0 4px 18px rgba(80,0,120,0.18);
+        background: linear-gradient(90deg, #8e2de2 0%, #4a00e0 100%);
+        color: #fff;
+        border: none;
+        transition: background 0.3s;
+    }
+    .dashboard-fab:hover {
+        background: linear-gradient(90deg, #4a00e0 0%, #8e2de2 100%);
+        color: #fff;
+    }
+    @media (max-width: 600px) {
+        .dashboard-fab {
+            bottom: 16px;
+            right: 16px;
+            width: 48px;
+            height: 48px;
+            font-size: 1.2rem;
+        }
+    }
+</style>
 <script src="/js/toll_collection.js"></script>
+<script>
+    document.getElementById('dashboardBtn').addEventListener('click', function() {
+        // Change the URL below to your actual dashboard route if needed
+        window.location.href = '/user/staff/dashboard';
+    });
+</script>
 </body>
 </html>

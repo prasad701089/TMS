@@ -35,6 +35,7 @@ public class TollController {
         public List<TollTransaction> getAllTransactions() {
             return tollService.getAllTransactions();
         }
+        
     }
 
 
