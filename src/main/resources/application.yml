@@ -4,9 +4,10 @@ spring:
   profiles:
     active: dev
   datasource:
-    url: jdbc:dpg-d2qpraer433s73en2elg-a.oregon-postgres.render.com/tms_rhri
-    username: root
-    password: ar4aam64STJyppbYs0RqDtyTgl2N9qPt
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/tms_db?createDatabaseIfNotExits=true}
+    username: ${DB_USER:root}
+    password: ${DB_USER:shubham}
+    driver-class-name: org.postgresql.Driver
     
 
   jpa:
