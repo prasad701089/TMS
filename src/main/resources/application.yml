@@ -1,12 +1,13 @@
 spring:
   application:
     name: TMS
-
+  profiles:
+    active: dev
   datasource:
-    url: jdbc:mysql://localhost:3306/tms?createDatabaseIfNotExist=true
+    url: jdbc:dpg-d2qo98adbo4c73cd20ag-a.oregon-postgres.render.com:5432/tms
     username: root
-    password: admin
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: xR6BgxujDAV6LN4ZyDxiHvQJSEMS7sjD
+    
 
   jpa:
     hibernate:
