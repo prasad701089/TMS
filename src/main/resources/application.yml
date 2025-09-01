@@ -4,9 +4,9 @@ spring:
   profiles:
     active: dev
   datasource:
-    url: jdbc:dpg-d2qo98adbo4c73cd20ag-a.oregon-postgres.render.com:5432/tms
+    url: jdbc:dpg-d2qpraer433s73en2elg-a.oregon-postgres.render.com/tms_rhri
     username: root
-    password: xR6BgxujDAV6LN4ZyDxiHvQJSEMS7sjD
+    password: ar4aam64STJyppbYs0RqDtyTgl2N9qPt
     
 
   jpa:
