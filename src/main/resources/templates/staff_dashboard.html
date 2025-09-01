@@ -295,25 +295,46 @@ document.addEventListener('DOMContentLoaded', function() {
     <div class="welcome">👋 Welcome, Staff!</div>
 
     <div class="row g-4 mb-5">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="card p-4 text-center">
-                <h5><i class="bi bi-currency-dollar"></i> Tolls Collected Today</h5>
-                <h2 id="tollToday">--</h2>
+                <h5><i class="bi bi-person-lines-fill"></i> Total Users</h5>
+                <h2 id="userCount" th:text="${userCount}">--</h2>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="card p-4 text-center">
-                <h5><i class="bi bi-truck-front"></i> Total Vehicles Processed</h5>
-                <h2 id="vehicleCount">--</h2>
+                <h5><i class="bi bi-currency-dollar"></i> Total Vehicles</h5>
+                <h2 id="tollCount" th:text="${tollCount}">--</h2>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-4 text-center">
+                <h5><i class="bi bi-clock-history"></i> Tolls Collected Today</h5>
+                <h2 id="tollToday" th:text="${tollToday}">--</h2>
             </div>
         </div>
     </div>
 
     <div class="transaction-list">
         <h5 class="mb-3"><i class="bi bi-clock-history"></i> Recent Transactions</h5>
-        <ul class="list-group list-group-flush" id="transactionList">
-            <li class="list-group-item">No recent transactions.</li>
-        </ul>
+        <div class="row g-3">
+            <div class="col-md-4" th:if="${#lists.isEmpty(recentTransactions)}">
+                <div class="card p-3 text-center shadow-sm">
+                    <div class="text-muted">No recent transactions.</div>
+                </div>
+            </div>
+            <div class="col-md-4" th:each="tx : ${recentTransactions}">
+                <div class="card p-3 h-100 shadow-sm border-0" style="border-radius: 14px; background: linear-gradient(135deg, #f5f0fa 60%, #eae1f9 100%);">
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="bi bi-cash-coin me-2" style="font-size: 1.7rem; color: #6a4d9a;"></i>
+                        <span class="fw-bold" th:text="${tx.tollName}">Toll Name</span>
+                    </div>
+                    <div class="mb-1"><span class="badge bg-primary me-1" th:text="${tx.vehicleType}">Type</span> <span class="badge bg-info text-dark" th:text="${tx.plan}">Plan</span></div>
+                    <div class="mb-1"><i class="bi bi-car-front"></i> <span th:text="${tx.vehicleNumber}">Vehicle</span></div>
+                    <div class="mb-1"><i class="bi bi-currency-rupee"></i> <span class="fw-bold text-success" th:text="${tx.amount}">Amount</span></div>
+                </div>
+            </div>
+        </div>
     </div>
 </main>
 

@@ -24,7 +24,5 @@ document.addEventListener("DOMContentLoaded", function() {
 
  
 
-  document.getElementById("downloadPdfBtn").addEventListener("click", function() {
-    window.location.href = "/download_invoice";
-  });
+
 });

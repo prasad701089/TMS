@@ -63,8 +63,8 @@ public class InvoiceDownloadController {
 				Font labelFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12);
 				Font valueFont = FontFactory.getFont(FontFactory.HELVETICA, 12);
 
-				table.addCell(new PdfPCell(new Phrase("Branch No", labelFont)));
-				table.addCell(new PdfPCell(new Phrase(ticket.getBranchNo() != null ? ticket.getBranchNo() : "", valueFont)));
+				table.addCell(new PdfPCell(new Phrase("Date", labelFont)));
+				table.addCell(new PdfPCell(new Phrase(ticket.getCreatedAt() != null ? ticket.getCreatedAt().toString() : "", valueFont)));
 				table.addCell(new PdfPCell(new Phrase("State", labelFont)));
 				table.addCell(new PdfPCell(new Phrase(ticket.getState() != null ? ticket.getState() : "", valueFont)));
 				table.addCell(new PdfPCell(new Phrase("District", labelFont)));

@@ -25,4 +25,12 @@ public class TollTicket {
     private String vehicleNumber;
 
     private Double amount; // price for this transaction
+
+    @Column(nullable = false, updatable = false)
+    private java.time.LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = java.time.LocalDateTime.now();
+    }
 }
