@@ -217,6 +217,32 @@
                 bottom: 15px;
                 transform: none;
             }
+           
+        }
+         
+            
+
+    .image-section img {
+      max-width:2500px;
+      max-height: 700px;
+      border-radius: 15px;
+      border: 3px solid #ddd;
+      background: #fff;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.07);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
+    }
+
+    .image-section img:hover {
+      transform: scale(1.02);
+      box-shadow: 0 8px 40px rgba(155, 89, 182, 0.25);
+    }
+        footer {
+            text-align: center;
+            padding: 15px 10px;
+            font-size: 0.9rem;
+            color: #777;
+            user-select: none;
         }
     </style>
 </head>
@@ -253,27 +279,16 @@
     </button>
 </nav>
 <main class="dashboard-content">
-    <div class="welcome">👋 Welcome, User!</div>
-    <div class="row g-4 mb-5">
-        <div class="col-md-6">
-            <div class="card p-4 text-center">
-                <h5><i class="bi bi-currency-dollar"></i> Total Tolls Paid</h5>
-                <h2 id="tollsPaid" th:text="${totalTollsPaid}">--</h2>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card p-4 text-center">
-                <h5><i class="bi bi-wallet2"></i> Total Amount Paid</h5>
-                <h2 id="amountPaid" th:text="${totalAmountPaid}">--</h2>
-            </div>
-        </div>
+     <div class="welcome">👋 Welcome, User!</div>
+    <div class="image-section">
+        <img src="https://images.adsttc.com/media/images/6503/17e7/057e/d57f/32c5/2470/large_jpg/shaoxing-highway-toll-gate-of-huhangyong-expressway-atelier-rentian_6.jpg?1694701559"
+             alt="Toll Gate Image" height="1000" />
     </div>
-    <div class="transaction-list">
-        <h5 class="mb-3"><i class="bi bi-clock-history"></i> Recent Transactions</h5>
-        <ul class="list-group list-group-flush" id="userTransactionList">
-            <li class="list-group-item">No recent transactions.</li>
-        </ul>
-    </div>
+
+    <footer>
+        &copy; 2025 Online Toll Gate Management System. All rights reserved.
+    </footer>
+
     
 </main>
 <script>

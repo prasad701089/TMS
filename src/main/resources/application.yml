@@ -2,12 +2,12 @@ spring:
   application:
     name: TMS
   profiles:
-    active: dev
+      active: dev
   datasource:
-    url: jdbc:dpg-d2qo98adbo4c73cd20ag-a.oregon-postgres.render.com:5432/tms
+    url: jdbc:postgresql://dpg-d2k33k6mcj7s739r5n8g-a.oregon-postgres.render.com:5432/chat_app_0auk
     username: root
-    password: xR6BgxujDAV6LN4ZyDxiHvQJSEMS7sjD
-    
+    password: mTodzaJU7q2B80sDJxxYUIuFg3Hxo5fD
+    driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:

@@ -59,6 +59,8 @@
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
@@ -141,13 +143,5 @@
 		</plugins>
 		<finalName>TMS</finalName>
 	</build>
-		<profiles>
-			<profile>
-				<id>dev</id>
-				<properties>
-					<spring.profiles.active>dev</spring.profiles.active>
-				</properties>
-			</profile>
-		</profiles>
 
 </project>
