@@ -4,9 +4,9 @@ spring:
   profiles:
     active: dev
   datasource:
-    url: jdbc:postgresql://dpg-d2rg6cfdiees73ebima0-a.oregon-postgres.render.com:5432/tms_12pi
+    url: jdbc:postgresql://root:LGs35L6AROw1WAmNGUtOTCS2r0Kiv3gV@dpg-d2rhicd6ubrc73en6oug-a.oregon-postgres.render.com:5432/tms_1ybu
     username: root
-    password: gMSwpTlp1jfxybpzwJSj4avXjLcvkNyo
+    password: LGs35L6AROw1WAmNGUtOTCS2r0Kiv3gV
     driver-class-name: org.postgresql.Driver
 
   jpa:
