@@ -4,9 +4,9 @@ spring:
   profiles:
       active: dev
   datasource:
-    url: jdbc:postgresql://dpg-d2k33k6mcj7s739r5n8g-a.oregon-postgres.render.com:5432/chat_app_0auk
+    url: jdbc:postgresql://root:8RFZFCxNcrhpXW9f49AdsL57cBL611Qa@dpg-d2rfj27diees73eaqb2g-a.oregon-postgres.render.com:5432/tms_rc8b
     username: root
-    password: mTodzaJU7q2B80sDJxxYUIuFg3Hxo5fD
+    password: 8RFZFCxNcrhpXW9f49AdsL57cBL611Qa
     driver-class-name: org.postgresql.Driver
 
   jpa:
